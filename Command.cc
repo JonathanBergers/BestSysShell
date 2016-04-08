@@ -79,7 +79,35 @@ void	Command::execute()
 
 	// TODO: replace the code below with something that really works
 
-#if 1	/* DEBUG code: Set to 0 to turn off the next block of code */
+
+    /// commands naar array zetten
+    const char *programname = words[0].c_str();
+
+    const char **argv = new const char* [words.size()+2];   // extra room for program name and sentinel
+    argv [0] = programname;         // by convention, argv[0] is program name
+        for (int j = 1;  j < words.size()+1;  ++j)     // copy args
+            argv [j] = words[j] .c_str();
+
+    argv [words.size()] = NULL;  // end of arguments sentinel is NULL
+
+    ///voer programma uit
+    int cid = fork(); ///maak nieuw process
+
+    if (cid > 0) {
+        /// het orginele process
+        //cerr << "ok" << endl;
+        //execlp( programname,   "more", 0  );
+    } else {
+        ///nieuwe process
+        execvp (programname, (char **)argv);
+        EXIT_SUCCESS;
+    }
+
+
+
+
+
+#if 0	/* DEBUG code: Set to 0 to turn off the next block of code */
 	cerr <<"Command::execute ";
 	// Show the I/O redirections first ...
 	if (!input.empty())
